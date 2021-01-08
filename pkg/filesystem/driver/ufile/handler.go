@@ -252,13 +252,24 @@ func (handler Driver)getUploadCredential(ctx context.Context, policy Uploadpolic
 			return serializer.UploadCredential{}, err
 		}
 		fmt.Println("serializer", string(callbackPolicyJSON))
-		callbackPolicyEncoded = base64.StdEncoding.EncodeToString(callbackPolicyJSON)
+		callbackPolicyEncoded = base64.URLEncoding.EncodeToString(callbackPolicyJSON)
+	}
+	contentType := c.Request.Header.Get("Content-Type")
+	if contentType == "" {
+		switch strings.ToLower(path.Ext(savePath)) {
+		case ".rar":
+			c.Request.Header.Set("Content-Type", "application/octet-stream")
+		default:
+
+		}
 	}
 
-	fmt.Println("Content-MD5:" , c.Request.Header.Get("Content-MD5"))
-	fmt.Println("Content-type:" , c.Request.Header.Get("Content-Type"))
-	fmt.Println("key:" , savePath)
-	//signature := handler.Client.Auth.Authorization("POST", handler.Policy.BucketName, savePath, c.Request.Header)
+	//fmt.Println("ext:", path.Ext(savePath))
+	//fmt.Println("Content-MD5:" , c.Request.Header.Get("Content-MD5"))
+	//fmt.Println("Content-type:" , c.Request.Header.Get("Content-Type"))
+	//fmt.Println("savePath:" , savePath)
+	//fmt.Println("BucketName:" , handler.Policy.BucketName)
+	//fmt.Println("callbackPolicyEncoded:" , callbackPolicyEncoded)
 	putPolicy := handler.Client.Auth.AuthorizationPolicy("POST", handler.Policy.BucketName, savePath, callbackPolicyEncoded, c.Request.Header)
 	return serializer.UploadCredential{
 		Policy:    putPolicy,

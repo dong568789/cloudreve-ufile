@@ -73,8 +73,8 @@ function getCookieByString(cookieName) {
             while (
                 ((div.innerHTML =
                     "<!--[if gt IE " + v + "]><i></i><![endif]-->"),
-                all[0])
-            ) {
+                    all[0])
+                ) {
                 v++;
             }
             return v > 4 ? v : false;
@@ -570,8 +570,8 @@ function getCookieByString(cookieName) {
                             if (obj.hasOwnProperty(property)) {
                                 string.push(
                                     that.stringifyJSON(property) +
-                                        ":" +
-                                        that.stringifyJSON(obj[property])
+                                    ":" +
+                                    that.stringifyJSON(obj[property])
                                 );
                             }
                         }
@@ -604,50 +604,50 @@ function getCookieByString(cookieName) {
         this.uploader = function(op) {
             /********** inner function define start **********/
 
-            // according the different condition to reset chunk size
-            // and the upload strategy according with the chunk size
-            // when chunk size is zero will cause to direct upload
-            // see the statement binded on 'BeforeUpload' event
+                // according the different condition to reset chunk size
+                // and the upload strategy according with the chunk size
+                // when chunk size is zero will cause to direct upload
+                // see the statement binded on 'BeforeUpload' event
             var reset_chunk_size = function() {
-                var ie = that.detectIEVersion();
-                var BLOCK_BITS, MAX_CHUNK_SIZE, chunk_size;
-                // case Safari 5、Windows 7、iOS 7 set isSpecialSafari to true
-                var isSpecialSafari =
-                    (moxie.core.utils.Env.browser === "Safari" &&
-                        moxie.core.utils.Env.version <= 5 &&
-                        moxie.core.utils.Env.os === "Windows" &&
-                        moxie.core.utils.Env.osVersion === "7") ||
-                    (moxie.core.utils.Env.browser === "Safari" &&
-                        moxie.core.utils.Env.os === "iOS" &&
-                        moxie.core.utils.Env.osVersion === "7");
-                // case IE 9-，chunk_size is not empty and flash is included in runtimes
-                // set op.chunk_size to zero
-                //if (ie && ie < 9 && op.chunk_size && op.runtimes.indexOf('flash') >= 0) {
-                if (
-                    ie &&
-                    ie < 9 &&
-                    op.chunk_size &&
-                    op.runtimes.indexOf("flash") >= 0
-                ) {
-                    //  link: http://www.plupload.com/docs/Frequently-Asked-Questions#when-to-use-chunking-and-when-not
-                    //  when plupload chunk_size setting is't null ,it cause bug in ie8/9  which runs  flash runtimes (not support html5) .
-                    op.chunk_size = 0;
-                } else if (isSpecialSafari) {
-                    // win7 safari / iOS7 safari have bug when in chunk upload mode
-                    // reset chunk_size to 0
-                    // disable chunk in special version safari
-                    op.chunk_size = 0;
-                } else {
-                    BLOCK_BITS = 20;
-                    MAX_CHUNK_SIZE = 4 << BLOCK_BITS; //4M
+                    var ie = that.detectIEVersion();
+                    var BLOCK_BITS, MAX_CHUNK_SIZE, chunk_size;
+                    // case Safari 5、Windows 7、iOS 7 set isSpecialSafari to true
+                    var isSpecialSafari =
+                        (moxie.core.utils.Env.browser === "Safari" &&
+                            moxie.core.utils.Env.version <= 5 &&
+                            moxie.core.utils.Env.os === "Windows" &&
+                            moxie.core.utils.Env.osVersion === "7") ||
+                        (moxie.core.utils.Env.browser === "Safari" &&
+                            moxie.core.utils.Env.os === "iOS" &&
+                            moxie.core.utils.Env.osVersion === "7");
+                    // case IE 9-，chunk_size is not empty and flash is included in runtimes
+                    // set op.chunk_size to zero
+                    //if (ie && ie < 9 && op.chunk_size && op.runtimes.indexOf('flash') >= 0) {
+                    if (
+                        ie &&
+                        ie < 9 &&
+                        op.chunk_size &&
+                        op.runtimes.indexOf("flash") >= 0
+                    ) {
+                        //  link: http://www.plupload.com/docs/Frequently-Asked-Questions#when-to-use-chunking-and-when-not
+                        //  when plupload chunk_size setting is't null ,it cause bug in ie8/9  which runs  flash runtimes (not support html5) .
+                        op.chunk_size = 0;
+                    } else if (isSpecialSafari) {
+                        // win7 safari / iOS7 safari have bug when in chunk upload mode
+                        // reset chunk_size to 0
+                        // disable chunk in special version safari
+                        op.chunk_size = 0;
+                    } else {
+                        BLOCK_BITS = 20;
+                        MAX_CHUNK_SIZE = 4 << BLOCK_BITS; //4M
 
-                    chunk_size = plupload.parseSize(op.chunk_size);
+                        chunk_size = plupload.parseSize(op.chunk_size);
 
-                    // qiniu service  max_chunk_size is 4m
-                    // reset chunk_size to max_chunk_size(4m) when chunk_size > 4m
-                }
-                // if op.chunk_size set 0 will be cause to direct upload
-            };
+                        // qiniu service  max_chunk_size is 4m
+                        // reset chunk_size to max_chunk_size(4m) when chunk_size > 4m
+                    }
+                    // if op.chunk_size set 0 will be cause to direct upload
+                };
 
             var getHosts = function(hosts) {
                 var result = [];
@@ -1073,7 +1073,7 @@ function getCookieByString(cookieName) {
                                 if (typeof x_vars[x_key] === "function") {
                                     multipart_params_obj["x:" + x_key] = x_vars[
                                         x_key
-                                    ](up, file);
+                                        ](up, file);
                                 } else if (typeof x_vars[x_key] !== "object") {
                                     multipart_params_obj["x:" + x_key] =
                                         x_vars[x_key];
@@ -1082,17 +1082,17 @@ function getCookieByString(cookieName) {
                         }
                     }
                     console.log("qiniuUploadUrl", qiniuUploadUrl + "/" + encodeURIComponent(that.file_name));
-                        up.setOption({
-                            url: qiniuUploadUrl + "/" + encodeURIComponent(that.file_name),
-                            multipart: true,
-                            chunk_size: is_android_weixin_or_qq()
-                                ? op.max_file_size
-                                : undefined,
-                            multipart_params: multipart_params_obj,
-                            headers:{
+                    up.setOption({
+                        url: qiniuUploadUrl,
+                        multipart: true,
+                        chunk_size: is_android_weixin_or_qq()
+                            ? op.max_file_size
+                            : undefined,
+                        multipart_params: multipart_params_obj,
+                        headers:{
 
-                            }
-                        });
+                        }
+                    });
 
                 };
 
@@ -1171,7 +1171,7 @@ function getCookieByString(cookieName) {
                                             // set block size
                                             if (
                                                 localFileInfo.offset +
-                                                    blockSize >
+                                                blockSize >
                                                 file.size
                                             ) {
                                                 blockSize =
@@ -1371,6 +1371,7 @@ function getCookieByString(cookieName) {
                                     errTip = "您当前的用户组不可上传此文件";
                                     break;
                                 case plupload.HTTP_ERROR:
+
                                     console.log("err", err);
                                     if (err.response === "") {
                                         // Fix parseJSON error ,when http error is like net::ERR_ADDRESS_UNREACHABLE
@@ -1382,16 +1383,11 @@ function getCookieByString(cookieName) {
                                         break;
                                     }
                                     if (uploadConfig.saveType == "ufile") {
-                                        var str = err.response;
+                                        var errorObj = that.parseJSON(
+                                            err.response
+                                        );
+                                        var errorText = errorObj.ErrMsg;
                                         try {
-                                            parser = new DOMParser();
-                                            xmlDoc = parser.parseFromString(
-                                                str,
-                                                "text/xml"
-                                            );
-                                            var errorText = xmlDoc.getElementsByTagName(
-                                                "Message"
-                                            )[0].innerHTML;
                                             errTip = "上传失败";
                                             errTip =
                                                 errTip +
@@ -1427,7 +1423,7 @@ function getCookieByString(cookieName) {
                                     }
                                     break;
                                 default:
-                                    errTip = err.message + err.details;
+                                    errTip = err.ErrMsg + err.RetCode;
                                     break;
                             }
                             if (_Error_Handler) {
@@ -1502,7 +1498,7 @@ function getCookieByString(cookieName) {
                                             uploader.trigger("Error", {
                                                 status: ajax_downtoken.status,
                                                 response:
-                                                    ajax_downtoken.responseText,
+                                                ajax_downtoken.responseText,
                                                 file: file,
                                                 code: plupload.HTTP_ERROR
                                             });
@@ -1511,9 +1507,9 @@ function getCookieByString(cookieName) {
                                 };
                                 ajax_downtoken.send(
                                     "key=" +
-                                        that.parseJSON(info).key +
-                                        "&domain=" +
-                                        op.domain
+                                    that.parseJSON(info).key +
+                                    "&domain=" +
+                                    op.domain
                                 );
                             } else if (_FileUploaded_Handler) {
                                 _FileUploaded_Handler(up, file, info);
