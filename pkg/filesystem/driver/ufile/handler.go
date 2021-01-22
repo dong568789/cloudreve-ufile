@@ -255,12 +255,13 @@ func (handler Driver)getUploadCredential(ctx context.Context, policy Uploadpolic
 		callbackPolicyEncoded = base64.URLEncoding.EncodeToString(callbackPolicyJSON)
 	}
 	contentType := c.Request.Header.Get("Content-Type")
+
 	if contentType == "" {
 		switch strings.ToLower(path.Ext(savePath)) {
 		case ".rar":
 			c.Request.Header.Set("Content-Type", "application/octet-stream")
 		default:
-
+			c.Request.Header.Set("Content-Type", "application/octet-stream")
 		}
 	}
 
